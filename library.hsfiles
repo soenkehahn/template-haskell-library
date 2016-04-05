@@ -1,0 +1,44 @@
+{-# START_FILE package.yaml #-}
+ghc-options: -Wall -fno-warn-name-shadowing
+
+tests:
+  spec:
+    main: Spec.hs
+    source-dirs:
+      - test
+    dependencies:
+      - hspec
+      - {{name}}
+
+library:
+  source-dirs:
+    - src
+
+dependencies:
+  - base
+{-# START_FILE .ghci #-}
+:set -itest -isrc
+{-# START_FILE .gitignore #-}
+.stack-work/
+{{name}}.cabal
+{-# START_FILE test/Spec.hs #-}
+{-# OPTIONS_GHC -F -pgmF hspec-discover #-}
+{-# START_FILE test/LibSpec.hs #-}
+
+module LibSpec where
+
+import           Test.Hspec
+
+import           Lib
+
+spec :: Spec
+spec = do
+  describe "lib" $ do
+    it "exists" $ do
+      lib `shouldBe` 42
+{-# START_FILE src/Lib.hs #-}
+
+module Lib where
+
+lib :: Integer
+lib = 42
